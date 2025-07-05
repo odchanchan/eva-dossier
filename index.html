@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVA角色档案 AI艺术生成用</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background-color: #0d1117;
+        }
+        .font-teko {
+            font-family: 'Teko', sans-serif;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        .tag {
+            background-color: #30363d;
+            border: 1px solid #4d545d;
+            color: #c9d1d9;
+        }
+        .accent-text {
+            color: #9333ea; /* Purple-600 */
+        }
+        .accent-bg {
+            background-color: #9333ea;
+        }
+        .accent-border {
+            border-color: #9333ea;
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #4d545d;
+        }
+        .timeline-item {
+            position: relative;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #9333ea;
+            border: 2px solid #161b22;
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-12">
+            <h1 class="font-teko text-6xl md:text-8xl font-bold uppercase tracking-wider text-white">EVA 角色档案</h1>
+            <p class="mt-2 text-lg text-gray-400 max-w-3xl mx-auto">用于生成高质量同人作品的参考指南。此档案提供关键视觉特征、性格线索和关系数据，以构建有效的AI艺术提示词。</p>
+        </header>
+
+        <section class="mb-16">
+            <h2 class="font-teko text-4xl text-center mb-8 uppercase text-white">驾驶员概览</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="card p-6 rounded-lg">
+                    <h3 class="font-teko text-3xl mb-4 text-white">主要驾驶员分布</h3>
+                    <p class="mb-4 text-gray-400">此图表展示了核心系列中三位主要被指定为福音战士驾驶员的“适格者”的关注度。他们交织的命运构成了叙事的核心支柱。</p>
+                    <div class="chart-container h-64 md:h-80">
+                        <canvas id="pilotDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="card p-6 rounded-lg">
+                    <h3 class="font-teko text-3xl mb-4 text-white">驾驶员选拔流程</h3>
+                    <p class="text-gray-400 mb-4">福音战士驾驶员的选拔是一个由NERV和马尔杜克机构监督的严格而神秘的过程。它不基于技能，而是基于与特定EVA机体的生物学和心理学上的预定兼容性。</p>
+                    <div class="timeline text-gray-400">
+                        <div class="timeline-item pb-4">
+                            <h4 class="font-bold text-white">1. 候选人识别</h4>
+                            <p class="text-sm">识别潜在的驾驶员，被称为“适格者”。所有已知的候选人都是14岁的失去母亲的孩子。</p>
+                        </div>
+                        <div class="timeline-item pb-4">
+                            <h4 class="font-bold text-white">2. 同步率测试</h4>
+                            <p class="text-sm">候选人进行同步率测试，以衡量他们与福音战士机体的兼容性。操作需要高同步率。</p>
+                        </div>
+                        <div class="timeline-item">
+                            <h4 class="font-bold text-white">3. 指定与训练</h4>
+                            <p class="text-sm">成功的候选人被指定为正式驾驶员（例如，“第三适格者”），并接受严格的、通常是创伤性的战斗训练。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+            
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">碇真嗣 <span class="accent-text text-2xl">第三适格者</span></h3>
+                <p class="text-gray-400 mb-4">福音战士初号机驾驶员。</p>
+                <div class="chart-container mb-6">
+                    <canvas id="shinjiChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁</span>
+                            <span class="tag rounded-md px-2 py-1">棕色短发</span>
+                            <span class="tag rounded-md px-2 py-1">蓝灰色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">纤细身材</span>
+                            <span class="tag rounded-md px-2 py-1">忧郁表情</span>
+                            <span class="tag rounded-md px-2 py-1">内省的眼神</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">战斗服:</span> 蓝白相间，胸前有#01。</li>
+                            <li><span class="font-semibold text-gray-300">校服:</span> 白色短袖衬衫，黑色裤子。</li>
+                            <li><span class="font-semibold text-gray-300">休闲服:</span> 经常带着S-DAT播放器，穿着简单的衬衫。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">与父亲碇源堂关系复杂而紧张。寻求美里的认可。与明日香形成困难的、相互依赖的关系，与绫波丽则有神秘的联系。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。被美里带到NERV，被迫驾驶初号机对抗第三使徒。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第19话:</span> “男人的战斗”。在初号机暴走状态下击败第十四使徒Zeruel。</li>
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 经历人类补完计划，最终与明日香在海边。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://upload.wikimedia.org/wikipedia/en/2/2a/Shinji_Ikari_in_Evangelion.png" alt="真嗣首次驾驶初号机" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 真嗣被父亲突然召到第三新东京市，在巨大使徒的威胁下，他被迫坐上初号机。尽管内心充满恐惧和抗拒，但在绫波丽的伤势和美里的鼓励下，他最终成功启动EVA，展现了初号机惊人的力量。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/EVA-01_berserk_%28Rebuild%29.png" alt="初号机暴走" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第19话:</span> 真嗣在与第十四使徒Zeruel的战斗中，因EVA能源耗尽而陷入绝境。在极度绝望和愤怒下，初号机进入暴走状态，以原始的野性力量撕裂并吞噬了使徒，展现了EVA作为生命体的恐怖一面，也让真嗣对EVA和自身的联系感到更深的恐惧。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/6/6b/Shinji_and_Asuka_on_the_beach.jpg" alt="真嗣与LCL之海" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 在人类补完计划的最终阶段，真嗣的内心世界被彻底揭露。他面对着所有痛苦、孤独和逃避，最终在与绫波丽（莉莉丝）的互动中，做出了选择，拒绝了补完，回到了现实世界，与明日香一同面对末日后的世界。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">惣流·明日香·兰格雷 <span class="accent-text text-2xl">第二适格者</span></h3>
+                <p class="text-gray-400 mb-4">福音战士贰号机驾驶员。</p>
+                <div class="chart-container mb-6">
+                    <canvas id="asukaChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁</span>
+                            <span class="tag rounded-md px-2 py-1">赤褐色长发</span>
+                            <span class="tag rounded-md px-2 py-1">红色发带双马尾</span>
+                            <span class="tag rounded-md px-2 py-1">明亮的蓝色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">自信、傲慢的姿态</span>
+                            <span class="tag rounded-md px-2 py-1">傲娇性格</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">战斗服:</span> 鲜红色和橙色，胸前有#02。</li>
+                            <li><span class="font-semibold text-gray-300">校服:</span> 蓝色水手服。</li>
+                            <li><span class="font-semibold text-gray-300">休闲服:</span> 经常穿简单的黄色夏装。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">与真嗣激烈竞争，常以攻击性掩饰脆弱。蔑视绫波丽。寻求加持和美里的认可。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第8话:</span> “明日香、来日”。随贰号机一同登场，展现出高傲的性格和高同步率。</li>
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 驾驶贰号机对抗量产型EVA，最终被击败。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/5/52/Asuka_and_Unit-02_vs._Gaghiel.png" alt="明日香贰号机首次出击" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第8话:</span> 明日香在海上与第六使徒Gaghiel的战斗中首次驾驶贰号机，展现了她高超的战斗天赋和自信。她与真嗣的首次合作也充满了摩擦，奠定了两人复杂关系的基础。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/2/23/Asuka_vs_Mass_Production_Evas.jpg" alt="贰号机大战量产机" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 在NERV被攻陷，精神崩溃的明日香被放入贰号机，在母亲灵魂的帮助下，短暂恢复了战斗力，以一敌九对抗量产型EVA。这场战斗虽然悲壮，但展现了明日香作为驾驶员的巅峰，最终她被量产机撕裂，成为其悲剧命运的高潮。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">绫波丽 <span class="accent-text text-2xl">第一适格者</span></h3>
+                <p class="text-gray-400 mb-4">福音战士零号机驾驶员。</p>
+                <div class="chart-container mb-6">
+                    <canvas id="reiChart"></canvas>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁 (按时间顺序)</span>
+                            <span class="tag rounded-md px-2 py-1">浅蓝色短发</span>
+                            <span class="tag rounded-md px-2 py-1">深红色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">苍白皮肤</span>
+                            <span class="tag rounded-md px-2 py-1">无感情、像玩偶般</span>
+                            <span class="tag rounded-md px-2 py-1">神秘的存在</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">战斗服:</span> 白橙相间，胸前有#00。常缠绷带。</li>
+                            <li><span class="font-semibold text-gray-300">校服:</span> 蓝色水手服。</li>
+                            <li><span class="font-semibold text-gray-300">其他:</span> 经常穿着医疗服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">对碇源堂忠心耿耿。与真嗣的互动慢慢唤醒了她的人性。基本上被明日香无视。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。重伤状态下被真嗣替换驾驶零号机。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第6话:</span> “决战、第三新东京市”。与真嗣合作，在“屋岛作战”中击败第六使徒。</li>
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 在人类补完计划中扮演核心角色，与莉莉丝融合。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Rei_Ayanami_in_Evangelion.png" alt="绫波丽受伤与真嗣相遇" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 绫波丽在与使徒的战斗中重伤，无法驾驶零号机。她苍白、受伤的形象以及对真嗣的顺从，是她首次给观众留下的深刻印象，也促使真嗣首次驾驶EVA。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/2/25/Yashima_Operation.jpg" alt="绫波丽屋岛作战" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第6话:</span> 在“屋岛作战”中，绫波丽与真嗣协同作战，她驾驶零号机用盾牌保护真嗣的初号机，承受了使徒的致命一击。这一幕是她与真嗣之间情感建立的关键点，也是她首次展现出为他人牺牲的意愿。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/9/91/Giant_Rei.jpg" alt="莉莉丝丽" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 绫波丽在补完计划中扮演了至关重要的角色。她拒绝了碇源堂的控制，带着亚当的胚胎和莉莉丝的灵魂，与莉莉丝融合，成为了巨大的“莉莉丝丽”，引导着人类补完计划的进行，并最终将选择权交给了真嗣。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col md:col-span-2 xl:col-span-3">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="font-teko text-4xl text-white">葛城美里 <span class="accent-text text-2xl">NERV作战部长</span></h3>
+                        <p class="text-gray-400 mb-4">担任EVA驾驶员的现场指挥官，也是真嗣和明日香的监护人。</p>
+                        <div class="space-y-4 mt-4">
+                             <div>
+                                <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                                <div class="flex flex-wrap gap-2 text-sm">
+                                    <span class="tag rounded-md px-2 py-1">29岁</span>
+                                    <span class="tag rounded-md px-2 py-1">深紫色长发</span>
+                                    <span class="tag rounded-md px-2 py-1">棕色眼睛</span>
+                                    <span class="tag rounded-md px-2 py-1">十字架项链</span>
+                                    <span class="tag rounded-md px-2 py-1">专业但常显凌乱</span>
+                                    <span class="tag rounded-md px-2 py-1">肚脐下方大疤痕</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">常见服装</h4>
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">NERV制服:</span> 黑红相间夹克，内搭白衬衫，黑色迷你裙。</li>
+                                    <li><span class="font-semibold text-gray-300">休闲服:</span> 经常穿红色皮夹克，或在家穿简单衣物（常显凌乱）。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">关键关系</h4>
+                                <p class="text-gray-400 text-sm">对真嗣和明日香而言，是代理母亲/姐姐般的存在。与加持良治有过复杂的感情史，与赤木律子则有专业上、有时紧张的关系。</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。将真嗣带到NERV，并成为他的监护人。</li>
+                                    <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 试图保护真嗣，最终牺牲。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                                <img src="https://static.wikia.nocookie.net/evangelion/images/a/a2/Misato_and_Shinji_arrive_at_NERV.png" alt="美里首次登场与真嗣" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 美里以其活泼、不拘小节的形象首次登场，她将真嗣从车站接到NERV，并在真嗣犹豫是否驾驶EVA时，以强硬但充满关怀的方式鼓励他，展现了她作为指挥官和监护人的双重身份。</li>
+                                </ul>
+                                <img src="https://static.wikia.nocookie.net/evangelion/images/f/f7/Misato_dies_EoE.png" alt="美里牺牲保护真嗣" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 在NERV总部被SEELE攻击时，美里为了保护真嗣，不惜牺牲自己的生命。她将真嗣推入电梯，鼓励他继续前进，并在临死前给予真嗣最后的吻和告别，这一幕是她作为真嗣“母亲”角色的终极体现。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                         <h3 class="font-teko text-4xl text-white">碇源堂 <span class="accent-text text-2xl">NERV司令</span></h3>
+                        <p class="text-gray-400 mb-4">NERV神秘而冷酷的司令，真嗣的疏远父亲。</p>
+                        <div class="space-y-4 mt-4">
+                             <div>
+                                <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                                <div class="flex flex-wrap gap-2 text-sm">
+                                    <span class="tag rounded-md px-2 py-1">48岁</span>
+                                    <span class="tag rounded-md px-2 py-1">深色头发，胡须</span>
+                                    <span class="tag rounded-md px-2 py-1">琥珀色眼镜</span>
+                                    <span class="tag rounded-md px-2 py-1">常在阴影中</span>
+                                    <span class="tag rounded-md px-2 py-1">白色手套</span>
+                                    <span class="tag rounded-md px-2 py-1">冷酷、算计的神态</span>
+                                    <span class="tag rounded-md px-2 py-1">十指交叉姿势</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">常见服装</h4>
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">NERV制服:</span> 高领紫白相间司令制服。</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <h4 class="font-bold text-white mb-2">关键关系</h4>
+                                <p class="text-gray-400 text-sm">操纵着周围的每一个人，尤其是他的儿子真嗣。他所有的动机都围绕着他已故的妻子唯。与绫波丽和赤木律子都有复杂、操纵性的关系。</p>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。命令真嗣驾驶EVA，展现其冷酷的一面。</li>
+                                    <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 试图启动人类补完计划，最终被初号机吞噬。</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                                <img src="https://static.wikia.nocookie.net/evangelion/images/3/30/Gendo_Ikari_in_Evangelion.png" alt="碇源堂命令真嗣" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 碇源堂以其标志性的双手交叉姿势和冷酷的命令，首次出现在真嗣面前，强迫真嗣驾驶EVA。他与真嗣的疏远关系和对EVA的绝对控制欲一览无余。</li>
+                                </ul>
+                                <img src="https://static.wikia.nocookie.net/evangelion/images/f/f3/Gendo_eaten_by_Unit-01.jpg" alt="碇源堂被初号机吞噬" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                                <ul class="list-disc list-inside text-gray-400 space-y-1">
+                                    <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 碇源堂在影片中积极推动人类补完计划，试图利用莉莉丝和亚当的力量与已故的妻子唯重聚。他最终被初号机吞噬，在精神世界中与真嗣进行了最后的对话，揭示了他内心深处的孤独和对爱的渴望。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- New Characters Added Below -->
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">渚薰 <span class="accent-text text-2xl">第五适格者</span></h3>
+                <p class="text-gray-400 mb-4">自由意志的使徒，被送往NERV。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">少年外表</span>
+                            <span class="tag rounded-md px-2 py-1">银灰色短发</span>
+                            <span class="tag rounded-md px-2 py-1">红色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">优雅、平静</span>
+                            <span class="tag rounded-md px-2 py-1">神秘微笑</span>
+                            <span class="tag rounded-md px-2 py-1">空灵气质</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">校服:</span> 与真嗣相同的校服。</li>
+                            <li><span class="font-semibold text-gray-300">Plugsuit:</span> 白色和黑色，#06 on chest。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">与真嗣建立了深刻而短暂的联系。被碇源堂操纵。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第24话:</span> “最后的使者”。接替明日香成为第五适格者，与真嗣建立亲密关系。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第24话:</span> 揭示其使徒身份，请求真嗣杀死自己。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/0/00/Kaworu_and_Shinji_on_the_lake.png" alt="渚薰与真嗣相遇" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第24话:</span> 渚薰作为第五适格者登场，迅速与孤独的真嗣建立起深厚的情感联系。他以其超脱世俗的言行和对人类的理解，给予真嗣极大的慰藉。然而，他最终揭示自己是第十七使徒Tabris，并主动要求真嗣杀死他，以阻止第三次冲击，这一幕对真嗣造成了毁灭性的打击。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">加持良治 <span class="accent-text text-2xl">NERV特务监察部</span></h3>
+                <p class="text-gray-400 mb-4">三重间谍，为NERV、日本政府和Seele工作。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">30岁左右</span>
+                            <span class="tag rounded-md px-2 py-1">黑色短发</span>
+                            <span class="tag rounded-md px-2 py-1">深色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">下巴胡茬</span>
+                            <span class="tag rounded-md px-2 py-1">玩世不恭的笑容</span>
+                            <span class="tag rounded-md px-2 py-1">神秘、自信</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">休闲服:</span> 宽松的衬衫，西装外套，常叼香烟。</li>
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 黑色制服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">与美里有复杂的感情纠葛。是真嗣的导师。与碇源堂和冬月耕造有秘密往来。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第8话:</span> “明日香、来日”。护送贰号机和明日香来到日本，与美里重逢。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第12话:</span> “奇迹的价值”。调查亚当，并向美里透露部分真相。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第19话:</span> “男人的战斗”。被暗杀，死前给美里留下重要信息。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Kaji_and_Misato_reunion.png" alt="加持与美里重逢" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第8话:</span> 加持良治以其成熟、神秘的魅力首次登场，他护送贰号机和明日香来到日本，并与美里重逢，两人的复杂关系浮出水面。他同时展现了其多重间谍的身份，为剧情增添了悬念。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/0/00/Kaji_shows_Misato_Adam.png" alt="加持调查亚当" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第12话:</span> 加持在调查第二次冲击的真相和亚当的过程中，向美里透露了部分信息，暗示了NERV和SEELE背后的更大阴谋，展现了他作为情报人员的关键作用。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/d/d4/Kaji_phone_call.png" alt="加持被暗杀" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第19话:</span> 加持在与美里最后一次通话后被暗杀，他的死亡是剧情的一个重要转折点，标志着NERV内部斗争的白热化，也为美里带来了巨大的冲击。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">赤木律子 <span class="accent-text text-2xl">NERV技术开发部</span></h3>
+                <p class="text-gray-400 mb-4">NERV首席科学家，MAGI系统的开发者。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">30岁左右</span>
+                            <span class="tag rounded-md px-2 py-1">金色短发</span>
+                            <span class="tag rounded-md px-2 py-1">蓝色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">吸烟</span>
+                            <span class="tag rounded-md px-2 py-1">冷静、理性</span>
+                            <span class="tag rounded-md px-2 py-1">疲惫感</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 白色实验室外套，衬衫和领带。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">对碇源堂有复杂的情感。是美里的好友。与母亲赤木直子（MAGI原型）的关系影响深远。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。作为科学家首次登场，协助EVA的启动。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第13话:</span> “使徒、侵入”。揭示MAGI系统和她与母亲的关系。</li>
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 试图阻止人类补完计划，最终被碇源堂射杀。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Ritsuko_Akagi_in_Evangelion.png" alt="律子首次登场" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 律子作为NERV的首席科学家首次登场，她冷静、专业的形象与美里的奔放形成对比。她负责EVA的维护和系统操作，是NERV技术核心的代表。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/5/53/Ritsuko_and_MAGI.png" alt="律子揭示MAGI秘密" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第13话:</span> 在与使徒Iruel的MAGI系统攻防战中，律子通过回忆揭示了MAGI系统的创建过程，以及她与母亲赤木直子之间复杂的关系，包括直子将自己的性格分裂并注入MAGI的秘密。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/a/a2/Ritsuko_shot_by_Gendo.png" alt="律子被碇源堂射杀" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 律子在NERV总部被SEELE攻击时，试图通过MAGI系统阻止人类补完计划，但最终被碇源堂阻止并亲手射杀。她的死亡充满了悲剧性，反映了她对源堂的爱恨交织以及对人类命运的绝望。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">冬月耕造 <span class="accent-text text-2xl">NERV副司令</span></h3>
+                <p class="text-gray-400 mb-4">碇源堂的副手，了解NERV和人类补完计划的许多秘密。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">老年</span>
+                            <span class="tag rounded-md px-2 py-1">白发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">严肃、沉静</span>
+                            <span class="tag rounded-md px-2 py-1">智慧、疲惫</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 黑色制服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">碇源堂的忠实伙伴和知己。曾是碇唯的大学教授。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。作为NERV副司令首次登场。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> “NERV诞生”。回忆他与碇唯和碇源堂的过去，揭示NERV的起源。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f0/Fuyutsuki_in_NERV.png" alt="冬月首次登场" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 冬月耕造作为碇源堂的副手，在NERV指挥室中首次登场。他沉着冷静，通常在源堂身边，是少数几个了解NERV深层秘密的人之一。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/7/77/Fuyutsuki_and_Yui.png" alt="冬月回忆NERV起源" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> 这一集通过冬月的回忆，详细揭示了他与碇唯和碇源堂的过去，包括他如何卷入NERV的创建，以及他对唯的感情。他见证了NERV的诞生和人类补完计划的初步形成。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">伊吹摩耶 <span class="accent-text text-2xl">NERV技术员</span></h3>
+                <p class="text-gray-400 mb-4">NERV技术部成员，律子的助手。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">24岁</span>
+                            <span class="tag rounded-md px-2 py-1">棕色短发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">认真、一丝不苟</span>
+                            <span class="tag rounded-md px-2 py-1">对血腥场面敏感</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 白色实验室外套。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">律子的得力助手和崇拜者。NERV指挥部的核心成员之一。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在NERV指挥室协助作战。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/5/52/Maya_Ibuki_in_NERV.png" alt="摩耶在指挥室" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 摩耶在NERV指挥室中首次登场，作为律子的主要助手，她负责EVA的系统监控和数据分析。她一丝不苟的工作态度和对血腥场面的不适，展现了她相对“正常”的性格。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">青叶茂 <span class="accent-text text-2xl">NERV技术员</span></h3>
+                <p class="text-gray-400 mb-4">NERV技术部成员，负责通信和分析。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">20多岁</span>
+                            <span class="tag rounded-md px-2 py-1">黑色短发</span>
+                            <span class="tag rounded-md px-2 py-1">冷静、沉着</span>
+                            <span class="tag rounded-md px-2 py-1">吉他手</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 黑色制服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">NERV指挥部的核心成员之一。与摩耶和日向是同事。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在NERV指挥室协助作战。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f7/Shigeru_Aoba_in_NERV.png" alt="青叶在指挥室" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 青叶茂作为NERV指挥室的通信员首次登场，他负责与驾驶员和外部进行联络，并在战斗中保持冷静。他偶尔会展现出对吉他的兴趣。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">日向诚 <span class="accent-text text-2xl">NERV技术员</span></h3>
+                <p class="text-gray-400 mb-4">NERV技术部成员，负责情报收集和数据分析。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">20多岁</span>
+                            <span class="tag rounded-md px-2 py-1">黑色短发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">对美里有好感</span>
+                            <span class="tag rounded-md px-2 py-1">忠诚、可靠</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 黑色制服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">NERV指挥部的核心成员之一。暗恋美里。与摩耶和青叶是同事。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在NERV指挥室协助作战。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/7/7b/Makoto_Hyuga_in_NERV.png" alt="日向在指挥室" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 日向诚作为NERV指挥室的系统分析员首次登场，他负责处理和分析战斗数据。他对美里抱有暗恋之情，在关键时刻总是默默支持她。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">赤木直子 <span class="accent-text text-2xl">MAGI系统开发者</span></h3>
+                <p class="text-gray-400 mb-4">律子的母亲，MAGI超级计算机系统的创造者。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">中年</span>
+                            <span class="tag rounded-md px-2 py-1">棕色头发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">科学家</span>
+                            <span class="tag rounded-md px-2 py-1">聪明、冷酷</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">NERV制服:</span> 实验室外套。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">律子的母亲。曾是碇源堂的情人。她的意识构成了MAGI系统。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第13话:</span> “使徒、侵入”。通过律子的回忆首次登场，揭示MAGI的创造过程。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> “NERV诞生”。详细描绘她与碇源堂和碇唯的关系。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Naoko_Akagi_with_MAGI.png" alt="直子与MAGI系统" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第13话:</span> 在与使徒Iruel的MAGI系统攻防战中，律子回忆了母亲赤木直子创建MAGI的过程，以及直子如何将自己的人格分裂注入到MAGI的三个核心中，展现了直子作为天才科学家和复杂女性的一面。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/8/87/Naoko_and_Gendo_and_Yui.png" alt="直子与源堂唯" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> 这一集深入探讨了直子与碇源堂、碇唯之间的三角关系，以及她对源堂的爱和嫉妒，最终导致她掐死了绫波丽的第一个克隆体。她的行为对律子产生了深远的影响。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">基尔·劳伦斯 <span class="accent-text text-2xl">Seele议长</span></h3>
+                <p class="text-gray-400 mb-4">秘密组织Seele的领导者，人类补完计划的真正幕后推手。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">老年</span>
+                            <span class="tag rounded-md px-2 py-1">光头</span>
+                            <span class="tag rounded-md px-2 py-1">赛博格化</span>
+                            <span class="tag rounded-md px-2 py-1">深色墨镜</span>
+                            <span class="tag rounded-md px-2 py-1">权威、冷酷</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">正装:</span> 黑色西装。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">Seele的最高领导。与碇源堂合作又互相利用。人类补完计划的最终执行者。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第7话:</span> “人造人、零号机”。通过全息投影会议首次出现。</li>
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 推动人类补完计划的最终阶段。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/4/4e/Keel_Lorenz_in_Evangelion.png" alt="基尔全息投影" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第7话:</span> 基尔·劳伦斯作为Seele的议长，首次通过全息投影会议的形式出现，他与碇源堂进行对话，暗示了NERV背后更深层次的组织和计划。他的赛博格化身体也首次被提及。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/3/36/Keel_Lorenz_EoE.png" alt="基尔启动补完计划" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">剧场版《The End of Evangelion》:</span> 基尔是人类补完计划的最终推动者，他命令SEELE发动对NERV的攻击，并启动了第三次冲击。他坚信人类补完是人类进化的最终形态，并最终在补完中化为LCL。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">碇唯 <span class="accent-text text-2xl">生物工程学家</span></h3>
+                <p class="text-gray-400 mb-4">碇真嗣的母亲，碇源堂的妻子，NERV的创始人之一。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">年轻女性</span>
+                            <span class="tag rounded-md px-2 py-1">棕色长发</span>
+                            <span class="tag rounded-md px-2 py-1">温柔、智慧</span>
+                            <span class="tag rounded-md px-2 py-1">神秘微笑</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">休闲服:</span> 朴素的日常服装。</li>
+                            <li><span class="font-semibold text-gray-300">实验室外套:</span> 实验期间。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">真嗣的母亲，源堂的妻子。与冬月耕造是师生关系。她的灵魂存在于初号机中。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在真嗣的回忆中首次出现。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第16话:</span> “疾病，以及”。在真嗣被初号机吞噬后，通过回忆展现其形象。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> “NERV诞生”。详细描绘她与源堂和冬月的过去。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/3/30/Yui_Ikari_in_Evangelion.png" alt="碇唯回忆画面" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 碇唯在真嗣的回忆中首次出现，她的形象是真嗣内心深处对母亲的渴望和痛苦的源泉。她温柔的笑容与源堂的冷酷形成鲜明对比。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/9/90/Yui_merged_with_Unit-01.png" alt="唯融入初号机" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第16话:</span> 当真嗣被初号机吞噬后，他在EVA内部与母亲的灵魂进行了深刻的交流。这一章揭示了唯自愿将自己的灵魂融入初号机，以成为人类最终的方舟，保护人类免受灭亡的真相。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/8/87/Naoko_and_Gendo_and_Yui.png" alt="唯与源堂冬月" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第21话:</span> 这一集通过冬月耕造的回忆，详细描绘了唯作为一名天才生物工程学家，如何与源堂相遇、结婚，以及她参与NERV前身GEHIRN的创建，并最终在EVA实验中“消失”的经过。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">葛城博士 <span class="accent-text text-2xl">第二次冲击调查队</span></h3>
+                <p class="text-gray-400 mb-4">美里的父亲，第二次冲击调查队的负责人。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">中年男性</span>
+                            <span class="tag rounded-md px-2 py-1">短发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">科学家</span>
+                            <span class="tag rounded-md px-2 py-1">严肃、专注</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">研究服:</span> 适合极地环境的服装。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">美里的父亲。在第二次冲击中牺牲，对美里影响深远。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第12话:</span> “奇迹的价值”。在美里的回忆中首次出现，描绘第二次冲击的场景。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/4/4e/Katsuragi_Expedition.png" alt="葛城博士第二次冲击" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第12话:</span> 葛城博士在美里的回忆中首次出现，他是第二次冲击调查队的负责人，在冲击发生时为了保护美里而牺牲。他的牺牲给美里留下了巨大的心理创伤，也塑造了美里后来的性格。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">铃原东治 <span class="accent-text text-2xl">真嗣同学</span></h3>
+                <p class="text-gray-400 mb-4">真嗣的同学和朋友，福音战士肆号机（临时）驾驶员。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁</span>
+                            <span class="tag rounded-md px-2 py-1">黑色短发</span>
+                            <span class="tag rounded-md px-2 py-1">棕色眼睛</span>
+                            <span class="tag rounded-md px-2 py-1">运动型</span>
+                            <span class="tag rounded-md px-2 py-1">直率、冲动</span>
+                            <span class="tag rounded-md px-2 py-1">关怀妹妹</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">校服:</span> 白色短袖衬衫，黑色裤子。</li>
+                            <li><span class="font-semibold text-gray-300">运动服:</span> 红色运动服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">真嗣和剑介的好友。与妹妹铃原樱关系亲密。对洞木光有好感。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在医院中被提及和短暂出现。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第18话:</span> “生命的选择”。他的病情促使东治接受EVA驾驶员的身份。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Toji_and_Shinji_first_meet.png" alt="东治初遇真嗣" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 东治首次登场时，因为妹妹在使徒袭击中受伤而对真嗣怀有敌意，甚至打了真嗣一拳，但随后两人逐渐成为朋友。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/6/6f/Unit-03_contaminated.png" alt="东治驾驶肆号机" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第18话:</span> 东治为了让妹妹得到更好的治疗，被迫成为EVA肆号机的驾驶员。然而，在与使徒Bardiel的战斗中，肆号机被使徒控制并攻击初号机，最终导致东治被真嗣亲手重伤，这一悲剧性事件对真嗣造成了巨大的心理创伤。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">相田剑介 <span class="accent-text text-2xl">真嗣同学</span></h3>
+                <p class="text-gray-400 mb-4">真嗣的同学和朋友，军事宅。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁</span>
+                            <span class="tag rounded-md px-2 py-1">黑色短发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">军事爱好者</span>
+                            <span class="tag rounded-md px-2 py-1">好奇、活泼</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">校服:</span> 白色短袖衬衫，黑色裤子。</li>
+                            <li><span class="font-semibold text-gray-300">休闲服:</span> 迷彩背心，军用帽子。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">真嗣和东治的好友。对NERV和EVA充满好奇。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在NERV指挥室协助作战。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Kensuke_Aida_in_class.png" alt="剑介与真嗣东治" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 剑介在真嗣的班级中首次登场，他是一个狂热的军事爱好者，对EVA和NERV充满好奇。他与真嗣和东治成为了朋友，经常尝试偷拍EVA或模拟战斗。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">洞木光 <span class="accent-text text-2xl">班长</span></h3>
+                <p class="text-gray-400 mb-4">真嗣班级的班长，东治的朋友。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">14岁</span>
+                            <span class="tag rounded-md px-2 py-1">棕色短发</span>
+                            <span class="tag rounded-md px-2 py-1">眼镜</span>
+                            <span class="tag rounded-md px-2 py-1">认真、负责</span>
+                            <span class="tag rounded-md px-2 py-1">对东治有好感</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">校服:</span> 蓝色水手服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">真嗣、明日香和绫波丽的同学。关心东治和他的妹妹。班级事务的组织者。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在NERV指挥室协助作战。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/3/3b/Hikari_Horaki_in_class.png" alt="洞木光作为班长" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 洞木光作为班长首次登场，她认真负责，对班级事务一丝不苟。她对铃原东治抱有好感，并在东治成为EVA驾驶员后，表现出对他的关心。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">铃原樱 <span class="accent-text text-2xl">东治的妹妹</span></h3>
+                <p class="text-gray-400 mb-4">铃原东治的妹妹，因第二次冲击受伤。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">小女孩</span>
+                            <span class="tag rounded-md px-2 py-1">棕色短发</span>
+                            <span class="tag rounded-md px-2 py-1">住院服</span>
+                            <span class="tag rounded-md px-2 py-1">虚弱、安静</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">住院服:</span> 医院病服。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">东治的妹妹，她的受伤是东治驾驶EVA的原因之一。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> “使徒、袭来”。在医院中被提及和短暂出现。</li>
+                            <li><span class="font-semibold text-gray-300">TV版 第18话:</span> “生命的选择”。她的病情促使东治接受EVA驾驶员的身份。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/f6/Toji%27s_sister.png" alt="铃原樱住院" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第1话:</span> 铃原樱在使徒袭击后受伤住院，她的受伤直接导致了哥哥东治对真嗣的愤怒，也间接促使东治后来成为EVA驾驶员。</li>
+                        </ul>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/6/6f/Unit-03_contaminated.png" alt="樱的病情促使东治驾驶EVA" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第18话:</span> 樱的病情恶化，NERV以提供更好治疗为条件，诱使东治成为EVA肆号机的驾驶员。樱的安危是东治做出这一悲剧性选择的关键因素。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card rounded-lg p-6 flex flex-col">
+                <h3 class="font-teko text-4xl text-white">Pen Pen <span class="accent-text text-2xl">温泉企鹅</span></h3>
+                <p class="text-gray-400 mb-4">美里饲养的温泉企鹅。</p>
+                <div class="space-y-4">
+                    <div>
+                        <h4 class="font-bold text-white mb-2">视觉提示词</h4>
+                        <div class="flex flex-wrap gap-2 text-sm">
+                            <span class="tag rounded-md px-2 py-1">企鹅</span>
+                            <span class="tag rounded-md px-2 py-1">红色领结</span>
+                            <span class="tag rounded-md px-2 py-1">聪明</span>
+                            <span class="tag rounded-md px-2 py-1">会看报纸</span>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">常见服装</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">无:</span> 通常是自然状态，偶尔有小物件。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键关系</h4>
+                        <p class="text-gray-400 text-sm">美里的宠物，与真嗣和明日香一同居住。是家中轻松氛围的来源。</p>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">首次登场与关键情节</h4>
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第2话:</span> “陌生的天花板”。首次在美里家中登场。</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white mb-2">关键章节内容的详细描述</h4>
+                        <img src="https://static.wikia.nocookie.net/evangelion/images/f/fe/Pen_Pen_in_Misato%27s_apartment.png" alt="PenPen在美里家" class="w-full rounded-md mb-2" onerror="this.onerror=null;this.src='https://placehold.co/400x225/333/FFF?text=图片加载失败';">
+                        <ul class="list-disc list-inside text-gray-400 space-y-1">
+                            <li><span class="font-semibold text-gray-300">TV版 第2话:</span> Pen Pen首次在美里的公寓中登场，作为美里的宠物，它为紧张的NERV生活带来了一丝轻松和幽默。它能够自己开关冰箱、看报纸，展现了其独特的智慧。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-700">
+            <p class="text-gray-500">本档案仅供创作参考。所有角色和商标均为Khara, Inc.和Gainax所有。</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (str, maxWidth = 16) => {
+            if (typeof str !== 'string' || str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+
+        const chartJsDefaults = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#c9d1d9',
+                        font: {
+                            family: "'Roboto Mono', monospace"
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const radarChartDefaults = {
+            ...chartJsDefaults,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(201, 209, 217, 0.2)' },
+                    grid: { color: 'rgba(201, 209, 217, 0.2)' },
+                    pointLabels: {
+                        color: '#c9d1d9',
+                        font: { size: 12, family: "'Roboto Mono', monospace" }
+                    },
+                    ticks: {
+                        color: '#161b22',
+                        backdropColor: 'rgba(201, 209, 217, 0.8)',
+                        font: { family: "'Roboto Mono', monospace" }
+                    }
+                }
+            }
+        };
+
+        const pilotDistributionData = {
+            labels: ['碇真嗣', '惣流·明日香·兰格雷', '绫波丽'],
+            datasets: [{
+                label: '驾驶员焦点',
+                data: [34, 33, 33],
+                backgroundColor: [
+                    'rgba(147, 51, 234, 0.7)', // Purple
+                    'rgba(220, 38, 38, 0.7)', // Red
+                    'rgba(59, 130, 246, 0.7)'  // Blue
+                ],
+                borderColor: '#161b22',
+                borderWidth: 3,
+                hoverOffset: 4
+            }]
+        };
+        new Chart(document.getElementById('pilotDistributionChart'), {
+            type: 'doughnut',
+            data: pilotDistributionData,
+            options: {
+                ...chartJsDefaults,
+                responsive: true,
+                maintainAspectRatio: false,
+            }
+        });
+
+        const shinjiData = {
+            labels: ['同步率', '精神稳定性', '攻击性', '服从性', '独立性'],
+            datasets: [{
+                label: '真嗣',
+                data: [9, 2, 3, 7, 1],
+                backgroundColor: 'rgba(147, 51, 234, 0.4)',
+                borderColor: 'rgba(147, 51, 234, 1)',
+                pointBackgroundColor: 'rgba(147, 51, 234, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(147, 51, 234, 1)',
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('shinjiChart'), {
+            type: 'radar',
+            data: shinjiData,
+            options: radarChartDefaults
+        });
+
+        const asukaData = {
+            labels: ['同步率', '精神稳定性', '攻击性', '服从性', '独立性'],
+            datasets: [{
+                label: '明日香',
+                data: [8, 4, 9, 2, 8],
+                backgroundColor: 'rgba(220, 38, 38, 0.4)',
+                borderColor: 'rgba(220, 38, 38, 1)',
+                pointBackgroundColor: 'rgba(220, 38, 38, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(220, 38, 38, 1)',
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('asukaChart'), {
+            type: 'radar',
+            data: asukaData,
+            options: radarChartDefaults
+        });
+
+        const reiData = {
+            labels: ['同步率', '精神稳定性', '攻击性', '服从性', '独立性'],
+            datasets: [{
+                label: '绫波丽',
+                data: [8, 7, 1, 9, 3],
+                backgroundColor: 'rgba(59, 130, 246, 0.4)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 2
+            }]
+        };
+        new Chart(document.getElementById('reiChart'), {
+            type: 'radar',
+            data: reiData,
+            options: radarChartDefaults
+        });
+
+    </script>
+</body>
+</html>
